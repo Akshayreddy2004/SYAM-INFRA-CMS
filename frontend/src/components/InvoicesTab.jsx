@@ -114,7 +114,7 @@ const InvoicesTab = ({ projectId }) => {
                 <td style={{ fontWeight: 600 }}>{inv.id}</td>
                 <td>{inv.date}</td>
                 <td>{inv.paid_date}</td>
-                <td style={{ fontWeight: 700 }}>₹{inv.total_amount.toLocaleString()}</td>
+                <td style={{ fontWeight: 700 }}>₹{inv.total_amount.toLocaleString('en-IN')}</td>
                 <td>
                   <select 
                     value={inv.status} 
@@ -167,7 +167,7 @@ const InvoicesTab = ({ projectId }) => {
                 >
                   <option value="">-- Select a Payment Stage --</option>
                   {schedules.map(s => (
-                    <option key={s.id} value={s.id}>{s.stage_name} (₹{s.expected_amount.toLocaleString()})</option>
+                    <option key={s.id} value={s.id}>{s.stage_name} (₹{s.expected_amount.toLocaleString('en-IN')})</option>
                   ))}
                 </select>
                 <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Selecting a stage will auto-fill the description and subtotal amount.</p>

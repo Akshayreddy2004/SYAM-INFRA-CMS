@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Search, Edit2, Trash2, Home, Hammer, PaintBucket, PenTool } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../utils/api';
+import { numberToWords } from '../utils/numberToWords';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -144,7 +145,7 @@ const Projects = () => {
             </div>
             <div>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.25rem' }}>{stat.type}</p>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem', color: 'var(--text-primary)' }}>₹{stat.revenue.toLocaleString()}</h3>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem', color: 'var(--text-primary)' }}>₹{stat.revenue.toLocaleString('en-IN')}</h3>
               <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{stat.count} Project{stat.count !== 1 ? 's' : ''}</p>
             </div>
           </div>
@@ -191,7 +192,7 @@ const Projects = () => {
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{project.client_phone}</div>
                 </td>
                 <td>{project.location}</td>
-                <td>₹{project.value.toLocaleString()}</td>
+                <td>₹{project.value.toLocaleString('en-IN')}</td>
                 <td>
                   <span className={`badge ${project.status === 'Completed' ? 'badge-success' : 'badge-warning'}`}>
                     {project.status}
@@ -254,6 +255,7 @@ const Projects = () => {
               <div className="input-group">
                 <label>Project Value (₹) *</label>
                 <input type="number" className="input" required value={formData.value} onChange={e => setFormData({...formData, value: e.target.value})} />
+                {formData.value && <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>{numberToWords(formData.value)}</p>}
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div className="input-group">

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Printer } from 'lucide-react';
 import api from '../utils/api';
+import { numberToWords } from '../utils/numberToWords';
 import '../App.css';
 
 const InvoiceView = () => {
@@ -24,8 +25,10 @@ const InvoiceView = () => {
       const proj = projRes.data;
       setProject(proj);
 
-      const cliRes = await api.get(`/clients/${proj.client_id}`);
-      setClient(cliRes.data);
+      setClient({
+        name: proj.client_name || 'N/A',
+        phone: proj.client_phone || 'N/A'
+      });
     } catch (e) {
       console.error(e);
     }
@@ -102,16 +105,21 @@ const InvoiceView = () => {
                 {invoice.description || 'Initial payment'}
               </td>
               <td style={{ padding: '0.75rem', textAlign: 'center', border: '1px solid #000' }}>
-                {invoice.subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                {invoice.subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
               </td>
             </tr>
           </tbody>
         </table>
 
         {/* Totals */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '5rem', gap: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '0.5rem', gap: '2rem' }}>
           <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Total Payable Balance:</div>
-          <div style={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#C5A059' }}>Rs. {invoice.total_amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+          <div style={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#C5A059' }}>Rs. {invoice.total_amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4rem' }}>
+          <div style={{ fontSize: '0.95rem', fontStyle: 'italic', color: '#555' }}>
+            Amount in Words: {numberToWords(invoice.total_amount)}
+          </div>
         </div>
 
         {/* Signature */}

@@ -55,7 +55,7 @@ const ExpensesTab = ({ projectId }) => {
                     {e.category}
                   </span>
                 </td>
-                <td style={{ fontWeight: 500 }}>{e.amount.toLocaleString()}</td>
+                <td style={{ fontWeight: 500 }}>{e.amount.toLocaleString('en-IN')}</td>
                 <td>{e.description || '-'}</td>
               </tr>
             ))}

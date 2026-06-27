@@ -59,7 +59,7 @@ const Invoices = () => {
                 <td style={{ fontWeight: 600 }}>{inv.id}</td>
                 <td><Link to={`/projects/${inv.project_id}`} style={{ color: 'var(--accent-color)', textDecoration: 'none' }}>{inv.project_id}</Link></td>
                 <td>{inv.date}</td>
-                <td>{inv.total_amount.toLocaleString()}</td>
+                <td>{inv.total_amount.toLocaleString('en-IN')}</td>
                 <td>
                   <span className={`badge ${
                     inv.status === 'Paid' ? 'badge-success' : 

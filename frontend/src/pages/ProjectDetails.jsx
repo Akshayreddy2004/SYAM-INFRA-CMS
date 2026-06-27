@@ -53,10 +53,10 @@ const ProjectDetails = () => {
         startY: 35,
         head: [['Financial Summary', 'Amount']],
         body: [
-          ['Total Project Value', `Rs. ${project.value.toLocaleString()}`],
-          ['Amount Received (Till Now)', `Rs. ${totalReceived.toLocaleString()}`],
-          ['Pending Balance (To Pay)', `Rs. ${pendingBalance.toLocaleString()}`],
-          ['Total Expenses (Internal)', `Rs. ${totalExpenses.toLocaleString()}`]
+          ['Total Project Value', `Rs. ${project.value.toLocaleString('en-IN')}`],
+          ['Amount Received (Till Now)', `Rs. ${totalReceived.toLocaleString('en-IN')}`],
+          ['Pending Balance (To Pay)', `Rs. ${pendingBalance.toLocaleString('en-IN')}`],
+          ['Total Expenses (Internal)', `Rs. ${totalExpenses.toLocaleString('en-IN')}`]
         ],
         theme: 'grid',
         headStyles: { fillColor: [41, 128, 185] }
@@ -64,16 +64,33 @@ const ProjectDetails = () => {
 
       // Payments
       if (payments.length > 0) {
-        autoTable(doc, {
-          startY: doc.lastAutoTable.finalY + 15,
-          head: [['Payment Stage', 'Expected', 'Received', 'Status', 'Due Date']],
-          body: payments.map(p => [
+        let paymentBody = [];
+        payments.forEach(p => {
+          paymentBody.push([
             p.stage_name || 'N/A', 
-            `Rs. ${p.expected_amount?.toLocaleString() || 0}`, 
-            `Rs. ${p.amount_received?.toLocaleString() || 0}`, 
+            `Rs. ${p.expected_amount?.toLocaleString('en-IN') || 0}`, 
+            `Rs. ${p.amount_received?.toLocaleString('en-IN') || 0}`, 
             p.status, 
             p.due_date || 'N/A'
-          ]),
+          ]);
+          
+          if (p.history && p.history.length > 0) {
+            p.history.forEach((h, index) => {
+              paymentBody.push([
+                `   ↳ Payment ${index + 1}`,
+                '',
+                `Rs. ${h.amount?.toLocaleString('en-IN') || 0}`,
+                'Received',
+                h.payment_date || 'N/A'
+              ]);
+            });
+          }
+        });
+
+        autoTable(doc, {
+          startY: doc.lastAutoTable.finalY + 15,
+          head: [['Payment Stage', 'Expected', 'Received', 'Status', 'Date']],
+          body: paymentBody,
           theme: 'striped',
           headStyles: { fillColor: [39, 174, 96] }
         });
@@ -86,7 +103,7 @@ const ProjectDetails = () => {
           head: [['Category', 'Amount', 'Date', 'Description']],
           body: expenses.map(e => [
             e.category || 'N/A', 
-            `Rs. ${e.amount?.toLocaleString() || 0}`, 
+            `Rs. ${e.amount?.toLocaleString('en-IN') || 0}`, 
             e.date || 'N/A',
             e.description || 'N/A'
           ]),
@@ -130,7 +147,7 @@ const ProjectDetails = () => {
           <span>•</span>
           <span>Status: <strong style={{ color: project.status === 'Completed' ? 'var(--success)' : 'var(--accent-color)' }}>{project.status}</strong></span>
           <span>•</span>
-          <span>Value: ₹{project.value.toLocaleString()}</span>
+          <span>Value: ₹{project.value.toLocaleString('en-IN')}</span>
         </div>
       </div>
 

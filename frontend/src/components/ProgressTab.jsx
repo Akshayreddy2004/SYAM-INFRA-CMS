@@ -62,7 +62,7 @@ const ProgressTab = ({ project, onProgressUpdate }) => {
                 <span className="badge badge-success">+{record.percentage_update}%</span>
               </div>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '0.5rem' }}>
-                {new Date(record.update_date).toLocaleString()}
+                {new Date(record.update_date).toLocaleString('en-IN')}
               </p>
               {record.notes && <p style={{ backgroundColor: 'var(--bg-color)', padding: '0.75rem', borderRadius: '6px', fontSize: '0.875rem', border: '1px solid var(--border-color)' }}>{record.notes}</p>}
             </div>

@@ -59,6 +59,23 @@ class Project(ProjectBase):
     class Config:
         from_attributes = True
 
+# --- Payment History ---
+class PaymentHistoryBase(BaseModel):
+    amount: float
+    payment_date: date
+    notes: Optional[str] = None
+
+class PaymentHistoryCreate(PaymentHistoryBase):
+    schedule_id: int
+
+class PaymentHistory(PaymentHistoryBase):
+    id: int
+    schedule_id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
 # --- Payment Schedules ---
 class PaymentScheduleBase(BaseModel):
     stage_name: str
@@ -80,23 +97,7 @@ class PaymentSchedule(PaymentScheduleBase):
     status: str
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
-
-# --- Payment History ---
-class PaymentHistoryBase(BaseModel):
-    amount: float
-    payment_date: date
-    notes: Optional[str] = None
-
-class PaymentHistoryCreate(PaymentHistoryBase):
-    schedule_id: int
-
-class PaymentHistory(PaymentHistoryBase):
-    id: int
-    schedule_id: int
-    created_at: datetime
+    history: List[PaymentHistory] = []
 
     class Config:
         from_attributes = True

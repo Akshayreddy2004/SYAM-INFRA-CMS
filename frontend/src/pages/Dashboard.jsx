@@ -30,9 +30,9 @@ const Dashboard = () => {
 
     { title: 'Active Projects', value: stats?.active_projects || 0, icon: Briefcase, color: '#3b82f6' },
     { title: 'Completed Projects', value: stats?.completed_projects || 0, icon: CheckCircle, color: 'var(--success)' },
-    { title: 'Total Revenue', value: `₹${(stats?.total_revenue || 0).toLocaleString()}`, icon: IndianRupee, color: 'var(--success)' },
-    { title: 'Pending Payments', value: `₹${(stats?.pending_payments || 0).toLocaleString()}`, icon: AlertCircle, color: 'var(--danger)' },
-    { title: 'Total Expenses', value: `₹${(stats?.total_expenses || 0).toLocaleString()}`, icon: TrendingUp, color: '#f97316' },
+    { title: 'Total Revenue', value: `₹${(stats?.total_revenue || 0).toLocaleString('en-IN')}`, icon: IndianRupee, color: 'var(--success)' },
+    { title: 'Pending Payments', value: `₹${(stats?.pending_payments || 0).toLocaleString('en-IN')}`, icon: AlertCircle, color: 'var(--danger)' },
+    { title: 'Total Expenses', value: `₹${(stats?.total_expenses || 0).toLocaleString('en-IN')}`, icon: TrendingUp, color: '#f97316' },
   ];
 
   const generateDashboardPDF = () => {

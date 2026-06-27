@@ -17,9 +17,10 @@ def get_dashboard_stats(db: Session = Depends(deps.get_db), current_user: models
     total_expenses_query = db.query(func.sum(models.Expense.amount)).filter(models.Expense.is_deleted == False).scalar()
     total_expenses = total_expenses_query if total_expenses_query else 0.0
     
-    expected_revenue_query = db.query(func.sum(models.PaymentSchedule.expected_amount)).filter(models.PaymentSchedule.is_deleted == False).scalar()
-    expected_revenue = expected_revenue_query if expected_revenue_query else 0.0
-    pending_payments = expected_revenue - total_revenue
+    total_project_value_query = db.query(func.sum(models.Project.value)).filter(models.Project.is_deleted == False).scalar()
+    total_project_value = total_project_value_query if total_project_value_query else 0.0
+    
+    pending_payments = total_project_value - total_revenue
     if pending_payments < 0:
         pending_payments = 0.0
         
@@ -53,10 +54,19 @@ def get_dashboard_stats(db: Session = Depends(deps.get_db), current_user: models
 
     all_payments = db.query(models.PaymentSchedule).filter(models.PaymentSchedule.is_deleted == False, models.PaymentSchedule.status != "Pending").all()
     for p in all_payments:
-        if p.due_date:
-            key = p.due_date.strftime("%Y-%m")
-            if key in monthly_data:
-                monthly_data[key]["revenue"] += p.amount_received
+        if p.history:
+            for h in p.history:
+                if h.payment_date:
+                    key = h.payment_date.strftime("%Y-%m")
+                    if key in monthly_data:
+                        monthly_data[key]["revenue"] += h.amount
+        else:
+            # Fallback for old payments without history
+            date_to_use = p.due_date or p.updated_at.date()
+            if date_to_use:
+                key = date_to_use.strftime("%Y-%m")
+                if key in monthly_data:
+                    monthly_data[key]["revenue"] += p.amount_received
 
     all_expenses = db.query(models.Expense).filter(models.Expense.is_deleted == False).all()
     for e in all_expenses:

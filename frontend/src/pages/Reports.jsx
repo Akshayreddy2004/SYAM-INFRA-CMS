@@ -41,9 +41,9 @@ const Reports = () => {
       startY: 40,
       head: [['Metric', 'Value']],
       body: [
-        ['Total Revenue', `Rs. ${reportData.total_revenue.toLocaleString()}`],
-        ['Total Expenses', `Rs. ${reportData.total_expenses.toLocaleString()}`],
-        ['Net Profit/Loss', `Rs. ${reportData.profit.toLocaleString()}`]
+        ['Total Revenue', `Rs. ${reportData.total_revenue.toLocaleString('en-IN')}`],
+        ['Total Expenses', `Rs. ${reportData.total_expenses.toLocaleString('en-IN')}`],
+        ['Net Profit/Loss', `Rs. ${reportData.profit.toLocaleString('en-IN')}`]
       ],
       theme: 'grid',
       headStyles: { fillColor: [41, 128, 185] }
@@ -101,15 +101,15 @@ const Reports = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
             <div style={{ padding: '1.5rem', backgroundColor: 'var(--success-bg)', borderRadius: 'var(--border-radius)', border: '1px solid var(--success)' }}>
               <p style={{ color: 'var(--success)', fontWeight: 600, marginBottom: '0.5rem' }}>Total Revenue</p>
-              <h2 style={{ fontSize: '2rem', color: 'var(--success)' }}>₹{reportData.total_revenue.toLocaleString()}</h2>
+              <h2 style={{ fontSize: '2rem', color: 'var(--success)' }}>₹{reportData.total_revenue.toLocaleString('en-IN')}</h2>
             </div>
             <div style={{ padding: '1.5rem', backgroundColor: 'var(--danger-bg)', borderRadius: 'var(--border-radius)', border: '1px solid var(--danger)' }}>
               <p style={{ color: 'var(--danger)', fontWeight: 600, marginBottom: '0.5rem' }}>Total Expenses</p>
-              <h2 style={{ fontSize: '2rem', color: 'var(--danger)' }}>₹{reportData.total_expenses.toLocaleString()}</h2>
+              <h2 style={{ fontSize: '2rem', color: 'var(--danger)' }}>₹{reportData.total_expenses.toLocaleString('en-IN')}</h2>
             </div>
             <div style={{ padding: '1.5rem', backgroundColor: reportData.profit >= 0 ? 'var(--success-bg)' : 'var(--danger-bg)', borderRadius: 'var(--border-radius)', border: `1px solid ${reportData.profit >= 0 ? 'var(--success)' : 'var(--danger)'}` }}>
               <p style={{ color: reportData.profit >= 0 ? 'var(--success)' : 'var(--danger)', fontWeight: 600, marginBottom: '0.5rem' }}>Net Profit/Loss</p>
-              <h2 style={{ fontSize: '2rem', color: reportData.profit >= 0 ? 'var(--success)' : 'var(--danger)' }}>₹{reportData.profit.toLocaleString()}</h2>
+              <h2 style={{ fontSize: '2rem', color: reportData.profit >= 0 ? 'var(--success)' : 'var(--danger)' }}>₹{reportData.profit.toLocaleString('en-IN')}</h2>
             </div>
           </div>
         </div>
