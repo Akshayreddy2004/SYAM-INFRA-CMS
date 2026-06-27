@@ -102,6 +102,38 @@ const PaymentsTab = ({ projectId }) => {
     }
   };
 
+  const handleEditHistory = async (historyObj) => {
+    const newAmountStr = window.prompt(`Enter new amount for this payment:`, historyObj.amount);
+    if (newAmountStr === null) return;
+    const newAmount = parseFloat(newAmountStr);
+    if (isNaN(newAmount) || newAmount < 0) return alert('Invalid amount');
+    
+    try {
+      await api.put(`/payments/history/${historyObj.id}`, { amount: newAmount });
+      setShowHistoryModal(false);
+      fetchSchedules();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update payment record');
+    }
+  };
+
+  const handleEditLegacy = async (scheduleId, currentAmount) => {
+    const newAmountStr = window.prompt(`Enter new amount for this legacy payment:`, currentAmount);
+    if (newAmountStr === null) return;
+    const newAmount = parseFloat(newAmountStr);
+    if (isNaN(newAmount) || newAmount < 0) return alert('Invalid amount');
+    
+    try {
+      await api.put(`/payments/${scheduleId}/legacy`, { amount: newAmount });
+      setShowHistoryModal(false);
+      fetchSchedules();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update legacy payment');
+    }
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -235,6 +267,9 @@ const PaymentsTab = ({ projectId }) => {
                       <td style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)' }}>₹{h.amount.toLocaleString('en-IN')}</td>
                       <td style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)' }}>{h.notes || '-'}</td>
                       <td style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)', textAlign: 'right' }}>
+                        <button className="btn btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', marginRight: '0.5rem' }} onClick={() => handleEditHistory(h)}>
+                          Edit
+                        </button>
                         <button className="btn btn-secondary" style={{ color: 'var(--danger)', padding: '0.25rem 0.5rem', fontSize: '0.75rem' }} onClick={() => handleDeleteHistory(h.id)}>
                           Delete
                         </button>
@@ -259,6 +294,9 @@ const PaymentsTab = ({ projectId }) => {
                     <td style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)' }}>₹{historySchedule.amount_received.toLocaleString('en-IN')}</td>
                     <td style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)' }}>Legacy Payment</td>
                     <td style={{ padding: '0.5rem', borderBottom: '1px solid var(--border-color)', textAlign: 'right' }}>
+                      <button className="btn btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', marginRight: '0.5rem' }} onClick={() => handleEditLegacy(historySchedule.id, historySchedule.amount_received)}>
+                        Edit
+                      </button>
                       <button className="btn btn-secondary" style={{ color: 'var(--danger)', padding: '0.25rem 0.5rem', fontSize: '0.75rem' }} onClick={() => handleDeleteLegacy(historySchedule.id)}>
                         Delete
                       </button>

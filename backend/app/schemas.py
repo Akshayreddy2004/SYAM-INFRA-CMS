@@ -68,6 +68,11 @@ class PaymentHistoryBase(BaseModel):
 class PaymentHistoryCreate(PaymentHistoryBase):
     schedule_id: int
 
+class PaymentHistoryUpdate(BaseModel):
+    amount: Optional[float] = None
+    payment_date: Optional[date] = None
+    notes: Optional[str] = None
+
 class PaymentHistory(PaymentHistoryBase):
     id: int
     schedule_id: int
