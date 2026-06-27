@@ -183,6 +183,13 @@ const ProjectDetails = () => {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
               <div>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '0.25rem' }}>Client</p>
+                <p style={{ fontWeight: 500 }}>{project.client_name || 'N/A'}</p>
+                {project.client_phone && (
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{project.client_phone}</p>
+                )}
+              </div>
+              <div>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '0.25rem' }}>Location</p>
                 <p style={{ fontWeight: 500 }}>{project.location || 'N/A'}</p>
               </div>

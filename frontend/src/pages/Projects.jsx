@@ -5,7 +5,6 @@ import api from '../utils/api';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
-  const [clients, setClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -14,7 +13,7 @@ const Projects = () => {
   const clientFilter = searchParams.get('client');
 
   const [formData, setFormData] = useState({ 
-    name: '', client_id: '', location: '', value: '', start_date: '', expected_completion: '', project_type: 'Cement + Interiors'
+    name: '', client_name: '', client_phone: '', location: '', value: '', start_date: '', expected_completion: '', project_type: 'Cement + Interiors'
   });
 
   useEffect(() => {
@@ -23,12 +22,8 @@ const Projects = () => {
 
   const fetchData = async () => {
     try {
-      const [pRes, cRes] = await Promise.all([
-        api.get('/projects/'),
-        api.get('/clients/')
-      ]);
+      const pRes = await api.get('/projects/');
       setProjects(pRes.data);
-      setClients(cRes.data);
     } catch (err) {
       console.error(err);
     }
@@ -58,7 +53,8 @@ const Projects = () => {
     setEditingId(project.id);
     setFormData({
       name: project.name,
-      client_id: project.client_id,
+      client_name: project.client_name || '',
+      client_phone: project.client_phone || '',
       location: project.location || '',
       value: project.value,
       start_date: project.start_date || '',
@@ -83,21 +79,18 @@ const Projects = () => {
   const closeModal = () => {
     setShowModal(false);
     setEditingId(null);
-    setFormData({ name: '', client_id: '', location: '', value: '', start_date: '', expected_completion: '', project_type: 'Cement + Interiors' });
+    setFormData({ name: '', client_name: '', client_phone: '', location: '', value: '', start_date: '', expected_completion: '', project_type: 'Cement + Interiors' });
   };
 
   let filteredProjects = projects.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
   if (clientFilter) {
-    filteredProjects = filteredProjects.filter(p => p.client_id === clientFilter);
+    filteredProjects = filteredProjects.filter(p => p.client_name === clientFilter);
   }
   if (typeFilter) {
     filteredProjects = filteredProjects.filter(p => p.project_type === typeFilter);
   }
 
-  const getClientName = (id) => {
-    const client = clients.find(c => c.id === id);
-    return client ? client.name : 'Unknown';
-  };
+
 
   // Calculate Revenue Summaries
   const summaryStats = [
@@ -176,7 +169,7 @@ const Projects = () => {
               <th>ID</th>
               <th>Project Name</th>
               <th>Type</th>
-              <th>Client</th>
+              <th>Client Details</th>
               <th>Location</th>
               <th>Value</th>
               <th>Status</th>
@@ -193,7 +186,10 @@ const Projects = () => {
                     {project.project_type}
                   </span>
                 </td>
-                <td>{getClientName(project.client_id)}</td>
+                <td>
+                  <div>{project.client_name}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{project.client_phone}</div>
+                </td>
                 <td>{project.location}</td>
                 <td>₹{project.value.toLocaleString()}</td>
                 <td>
@@ -232,12 +228,15 @@ const Projects = () => {
                 <label>Project Name *</label>
                 <input className="input" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
               </div>
-              <div className="input-group">
-                <label>Client *</label>
-                <select className="select" required value={formData.client_id} onChange={e => setFormData({...formData, client_id: e.target.value})}>
-                  <option value="">Select a client</option>
-                  {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="input-group">
+                  <label>Client Name *</label>
+                  <input className="input" required value={formData.client_name} onChange={e => setFormData({...formData, client_name: e.target.value})} />
+                </div>
+                <div className="input-group">
+                  <label>Client Phone</label>
+                  <input className="input" value={formData.client_phone} onChange={e => setFormData({...formData, client_phone: e.target.value})} />
+                </div>
               </div>
               <div className="input-group">
                 <label>Project Type *</label>

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base, SessionLocal
 from . import models, auth
-from .routers import auth as auth_router, clients, projects, dashboard, payments, expenses, documents, reports, progress, users, invoices, materials
+from .routers import auth as auth_router, projects, dashboard, payments, expenses, documents, reports, progress, users, invoices, materials
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -19,7 +19,6 @@ app.add_middleware(
 
 app.include_router(auth_router.router)
 app.include_router(dashboard.router)
-app.include_router(clients.router)
 app.include_router(projects.router)
 app.include_router(payments.router)
 app.include_router(expenses.router)

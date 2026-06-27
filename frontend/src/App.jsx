@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useState, useEffect } from 'react';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Clients from './pages/Clients';
 import Projects from './pages/Projects';
 import ProjectDetails from './pages/ProjectDetails';
 import Reports from './pages/Reports';
@@ -49,7 +48,6 @@ function App() {
           isAuthenticated ? <Layout toggleTheme={toggleTheme} theme={theme} onLogout={handleLogout} /> : <Navigate to="/login" />
         }>
           <Route index element={<Dashboard />} />
-          <Route path="clients" element={<Clients />} />
           <Route path="projects" element={<Projects />} />
           <Route path="projects/:id" element={<ProjectDetails />} />
           <Route path="invoices" element={<Invoices />} />

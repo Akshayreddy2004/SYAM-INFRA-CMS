@@ -28,7 +28,6 @@ const Layout = ({ toggleTheme, theme, onLogout }) => {
 
   const navItems = [
     { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/clients', label: 'Clients', icon: Users },
     { path: '/projects', label: 'Projects', icon: Briefcase },
     { path: '/invoices', label: 'Invoices', icon: Receipt },
     { path: '/reports', label: 'Reports', icon: FileBarChart },

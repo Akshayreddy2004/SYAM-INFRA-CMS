@@ -7,7 +7,7 @@ router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 
 @router.get("/stats")
 def get_dashboard_stats(db: Session = Depends(deps.get_db), current_user: models.User = Depends(deps.get_current_user)):
-    total_clients = db.query(models.Client).filter(models.Client.is_deleted == False).count()
+
     active_projects = db.query(models.Project).filter(models.Project.is_deleted == False, models.Project.status == "Ongoing").count()
     completed_projects = db.query(models.Project).filter(models.Project.is_deleted == False, models.Project.status == "Completed").count()
     
@@ -68,7 +68,6 @@ def get_dashboard_stats(db: Session = Depends(deps.get_db), current_user: models
     chart_data = [v for k, v in sorted(monthly_data.items())]
     
     return {
-        "total_clients": total_clients,
         "active_projects": active_projects,
         "completed_projects": completed_projects,
         "total_revenue": total_revenue,

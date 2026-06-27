@@ -27,7 +27,7 @@ const Dashboard = () => {
   if (loading) return <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem' }}>Loading Dashboard...</div>;
 
   const statCards = [
-    { title: 'Total Clients', value: stats?.total_clients || 0, icon: Users, color: 'var(--accent-color)' },
+
     { title: 'Active Projects', value: stats?.active_projects || 0, icon: Briefcase, color: '#3b82f6' },
     { title: 'Completed Projects', value: stats?.completed_projects || 0, icon: CheckCircle, color: 'var(--success)' },
     { title: 'Total Revenue', value: `₹${(stats?.total_revenue || 0).toLocaleString()}`, icon: IndianRupee, color: 'var(--success)' },

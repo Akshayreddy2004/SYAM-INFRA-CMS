@@ -12,24 +12,14 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     avatar = Column(String, nullable=True)
 
-class Client(Base):
-    __tablename__ = "clients"
-    id = Column(String, primary_key=True, index=True) # E.g. CLI-001
-    name = Column(String, index=True)
-    mobile = Column(String)
-    email = Column(String)
-    address = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    is_deleted = Column(Boolean, default=False)
-    
-    projects = relationship("Project", back_populates="client")
+
 
 class Project(Base):
     __tablename__ = "projects"
     id = Column(String, primary_key=True, index=True) # E.g. PRJ-001
     name = Column(String, index=True)
-    client_id = Column(String, ForeignKey("clients.id"))
+    client_name = Column(String, index=True)
+    client_phone = Column(String)
     location = Column(String)
     value = Column(Float)
     start_date = Column(Date)
@@ -41,7 +31,7 @@ class Project(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     is_deleted = Column(Boolean, default=False)
     
-    client = relationship("Client", back_populates="projects")
+
     schedules = relationship("PaymentSchedule", back_populates="project")
     expenses = relationship("Expense", back_populates="project")
     documents = relationship("Document", back_populates="project")
